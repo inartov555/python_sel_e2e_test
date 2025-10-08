@@ -1,0 +1,32 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.keys import Keys
+import pytest
+
+# pylint: disable=missing-function-docstring
+
+"""
+Interface for the Playwright driver
+"""
+
+from typing import Protocol, Optional, Literal
+
+WaitState = Literal["visible", "hidden", "attached", "detached"]
+
+
+class UIDriver(Protocol):
+    """
+    Interface for the Playwright driver
+    """
+    def goto(self, url: str, wait_until: str, timeout: int) -> None: ...
+    def click(self, sel: str, timeout_ms: Optional[int] = None) -> None: ...
+    def type(self, sel: str, text: str, delay_ms: Optional[int] = None, timeout_ms: Optional[int] = None) -> None: ...
+    def fill(self, sel: str, text: str, timeout_ms: Optional[int] = None) -> None: ...
+    def text(self, sel: str, timeout_ms: Optional[int] = None) -> str: ...
+    def is_visible(self, sel: str, timeout_ms: Optional[int] = None) -> bool: ...
+    def wait_for(self, sel: str, state: WaitState = "visible", timeout_ms: Optional[int] = None) -> None: ...
+    def screenshot(self, path: str, full_page: bool = True) -> None: ...
+    def locator(self, loc: str) -> Locator: ...
