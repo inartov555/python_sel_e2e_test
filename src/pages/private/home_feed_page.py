@@ -1,18 +1,13 @@
-# TODO(SELENIUM): Convert Playwright role/text queries to By.XPATH or By.CSS_SELECTOR.
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.keys import Keys
-import pytest
+from selenium.webdriver.support.ui import WebDriverWait
+
 
 """
 Authorized Home driver
 """
 
 from __future__ import annotations
-
 
 from tools.logger.logger import Logger
 from src.components.menu_overlay import MenuOverlay
@@ -21,9 +16,7 @@ from src.core.app_config import AppConfig
 from src.core.ui_driver import UIDriver
 from src.pages.base_page import BasePage
 
-
 log = Logger(__name__)
-
 
 class HomeFeedPage(BasePage):
     """

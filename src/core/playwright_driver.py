@@ -1,11 +1,7 @@
-# TODO(SELENIUM): Convert Playwright role/text queries to By.XPATH or By.CSS_SELECTOR.
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.keys import Keys
-import pytest
+from selenium.webdriver.support.ui import WebDriverWait
+
 
 """
 The adapter for the Playwright driver
@@ -15,7 +11,6 @@ from typing import Optional
 
 from src.core.ui_driver import UIDriver, WaitState
 from src.core.app_config import AppConfig
-
 
 class PlaywrightDriver(UIDriver):
     """
@@ -60,9 +55,7 @@ class PlaywrightDriver(UIDriver):
         """
         Fill in a locator with text
         """
-el = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "sel")))
-el.clear()
-el.send_keys(text, timeout=self._timeout(timeout_ms)
+        self.driver.locator(sel).fill(text, timeout=self._timeout(timeout_ms))
 
     def text(self, sel: str, timeout_ms: Optional[int] = None) -> str:
         """

@@ -1,11 +1,7 @@
-# TODO(SELENIUM): Convert Playwright role/text queries to By.XPATH or By.CSS_SELECTOR.
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.keys import Keys
-import pytest
+from selenium.webdriver.support.ui import WebDriverWait
+
 
 """
 Represents the menu pane in the home driver.
@@ -13,14 +9,11 @@ Represents the menu pane in the home driver.
 
 from __future__ import annotations
 
-
 from tools.logger.logger import Logger
 from src.pages.base_page import BasePage
 from src.components.base_component import BaseComponent
 
-
 log = Logger(__name__)
-
 
 class MenuOverlay(BaseComponent):
     """

@@ -1,10 +1,7 @@
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.keys import Keys
-import pytest
+from selenium.webdriver.support.ui import WebDriverWait
+
 
 """
 It's a temporary solution. We need a compiled program to hide the encryption/decription
@@ -24,10 +21,8 @@ from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes
 
-
 PASSWORD = "a;lstrYEDES&^&$&%"
 PBKDF2_ITERS = 200000
-
 
 def derive_key(password: str, salt: bytes, iterations: int = PBKDF2_ITERS) -> bytes:
     """
@@ -37,7 +32,6 @@ def derive_key(password: str, salt: bytes, iterations: int = PBKDF2_ITERS) -> by
         algorithm=hashes.SHA256(), length=32, salt=salt, iterations=iterations,
     )
     return kdf.derive(password.encode("utf-8"))
-
 
 def encrypt(plaintext: str, password: str = PASSWORD) -> str:
     """
@@ -51,7 +45,6 @@ def encrypt(plaintext: str, password: str = PASSWORD) -> str:
     ct = aesgcm.encrypt(nonce, _plaintext, None)
     encr = salt + nonce + ct
     return base64.b64encode(encr).decode("ascii")
-
 
 def decrypt(package: str, password: str = PASSWORD) -> str:
     """

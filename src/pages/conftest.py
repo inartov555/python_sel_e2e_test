@@ -1,10 +1,7 @@
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.keys import Keys
-import pytest
+from selenium.webdriver.support.ui import WebDriverWait
+
 
 """
 conftest.py
@@ -19,9 +16,7 @@ from src.pages.private.home_feed_page import HomeFeedPage
 from src.core.playwright_driver import PlaywrightDriver
 from tools.logger.logger import Logger
 
-
 log = Logger(__name__)
-
 
 @pytest.fixture(autouse=False, scope="function")
 def setup_elements_for_test(request, driver) -> None:

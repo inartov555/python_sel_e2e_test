@@ -1,10 +1,7 @@
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.keys import Keys
-import pytest
+from selenium.webdriver.support.ui import WebDriverWait
+
 
 """
 conftest.py
@@ -16,9 +13,7 @@ import pytest
 
 from tools.logger.logger import Logger
 
-
 log = Logger(__name__)
-
 
 @pytest.fixture(autouse=False, scope="function")
 def setup_cleanup_signin_signout(request) -> None:
@@ -44,7 +39,6 @@ def setup_cleanup_signin_signout(request) -> None:
     request.cls.home_page.menu_overlay.log_out()
     request.cls.landing_page.expect_loaded()
 
-
 @pytest.fixture(autouse=False, scope="function")
 def cleanup_remove_first(request) -> None:
     """
@@ -56,7 +50,6 @@ def cleanup_remove_first(request) -> None:
     first_post = request.cls.home_page.first_post
     first_post.scroll_to_element_liked_by()
     first_post.remove()
-
 
 @pytest.fixture(autouse=False, scope="function")
 def cleanup_unlike_first(request) -> None:

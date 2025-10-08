@@ -1,10 +1,7 @@
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.keys import Keys
-import pytest
+from selenium.webdriver.support.ui import WebDriverWait
+
 
 # pylint: disable=missing-function-docstring
 
@@ -15,7 +12,6 @@ Interface for the Playwright driver
 from typing import Protocol, Optional, Literal
 
 WaitState = Literal["visible", "hidden", "attached", "detached"]
-
 
 class UIDriver(Protocol):
     """

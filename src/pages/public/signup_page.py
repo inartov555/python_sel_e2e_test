@@ -1,10 +1,7 @@
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.keys import Keys
-import pytest
+from selenium.webdriver.support.ui import WebDriverWait
+
 
 """
 Signin driver
@@ -12,15 +9,12 @@ Signin driver
 
 from __future__ import annotations
 
-
 from tools.logger.logger import Logger
 from src.core.app_config import AppConfig
 from src.core.ui_driver import UIDriver
 from src.pages.base_page import BasePage
 
-
 log = Logger(__name__)
-
 
 class SignupPage(BasePage):
     """

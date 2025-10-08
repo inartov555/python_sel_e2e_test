@@ -1,10 +1,7 @@
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.keys import Keys
-import pytest
+from selenium.webdriver.support.ui import WebDriverWait
+
 
 """
 Login driver
@@ -18,9 +15,7 @@ from src.core.ui_driver import UIDriver
 from src.pages.base_page import BasePage
 from src.components.login_form import LoginForm
 
-
 log = Logger(__name__)
-
 
 class LoginPage(BasePage):
     """

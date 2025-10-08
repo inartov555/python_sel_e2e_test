@@ -1,10 +1,7 @@
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.keys import Keys
-import pytest
+from selenium.webdriver.support.ui import WebDriverWait
+
 
 """
 Tests for an unauthorized user
@@ -15,7 +12,6 @@ import pytest
 from tools.logger.logger import Logger
 
 log = Logger(__name__)
-
 
 @pytest.mark.usefixtures('setup_elements_for_test')
 class TestPublicPages:

@@ -1,10 +1,7 @@
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.keys import Keys
-import pytest
+from selenium.webdriver.support.ui import WebDriverWait
+
 
 """
 Represents a post in the home driver.
@@ -13,14 +10,11 @@ Some elements do not support regular click, that's why JS click event was dispat
 
 from __future__ import annotations
 
-
 from tools.logger.logger import Logger
 from src.pages.base_page import BasePage
 from src.components.base_component import BaseComponent
 
-
 log = Logger(__name__)
-
 
 class PostCard(BaseComponent):
     """

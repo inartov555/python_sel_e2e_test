@@ -1,10 +1,7 @@
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.keys import Keys
-import pytest
+from selenium.webdriver.support.ui import WebDriverWait
+
 
 """
 conftest.py file
@@ -20,16 +17,13 @@ from tools.temp_encr import decrypt
 from tools.logger.logger import Logger
 from tools.file_utils import FileUtils
 
-
 log = Logger(__name__)
-
 
 # Register fixture modules so tests can use them without importing symbols
 pytest_plugins = [
     "src.pages.conftest",
     "src.pages.private.conftest",
 ]
-
 
 @pytest.fixture(autouse=True, scope="session")
 def add_loggers():
@@ -51,7 +45,6 @@ def add_loggers():
     log.info(f"General loglevel: '{log_level}', File: '{log_file_level}'")
     log.info(f"Test logs will be stored: '{log_file}'")
 
-
 def validate_app_config_params(**kwargs) -> None:
     """
     Validation of the config parameters
@@ -60,7 +53,6 @@ def validate_app_config_params(**kwargs) -> None:
         raise ValueError("username parameter is required for tests")
     if not kwargs.get("password"):
         raise ValueError("password parameter is required for tests")
-
 
 @pytest.fixture(scope="session")
 def app_config(pytestconfig) -> AppConfig:
@@ -89,13 +81,11 @@ def app_config(pytestconfig) -> AppConfig:
     result_dict["password"] = decrypt(result_dict.get("password"))
     return AppConfig(**result_dict)
 
-
 def pytest_addoption(parser):
     """
     Supported options
     """
     parser.addoption("--ini-config", action="store", default="pytest.ini", help="The path to the *.ini config file")
-
 
 @pytest.fixture(scope="session")
 def screenshot_dir() -> str:
@@ -105,7 +95,6 @@ def screenshot_dir() -> str:
     artifacts_folder_default = os.getenv("HOST_ARTIFACTS")
     os.makedirs(artifacts_folder_default, exist_ok=True)
     return artifacts_folder_default
-
 
 def get_browser(playwright, request) -> Browser:
     """
@@ -148,7 +137,6 @@ def get_browser(playwright, request) -> Browser:
     request.node.stash["page_obj_fresh"] = driver  # it is needed to pass an acutal driver to BasePage objects
     log.info(f"{_app_config.browser} browser is selected")
     return browser
-
 
 @pytest.fixture(autouse=True, scope="function")
 def browser_setup(playwright, request):
