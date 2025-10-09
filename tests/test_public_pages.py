@@ -1,57 +1,31 @@
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
-
-
-"""
-Tests for an unauthorized user
-"""
+from __future__ import annotations
 
 import pytest
 
-from tools.logger.logger import Logger
+def test_landing_page_loads(landing_page):
+    landing_page.open()
+    landing_page.accept_cookies_if_shown()
+    landing_page.expect_loaded()
 
-log = Logger(__name__)
+def test_login_page_elements(login_page):
+    login_page.open()
+    login_page.allow_all_cookies_if_shown()
+    login_page.expect_loaded()
 
-@pytest.mark.usefixtures('setup_elements_for_test')
-class TestPublicPages:
-    """
-    Tests for an unauthorized user
-    """
+def test_signup_page_elements(signup_page):
+    signup_page.open()
+    signup_page.accept_cookies_if_shown()
+    signup_page.expect_loaded()
 
-    def test_landing_links_present(self):
-        """
-        Open the landing driver -> check if the driver is loaded
-        """
-        self.landing_page.open()
-        self.login_page.allow_all_cookies_if_shown()
-        self.landing_page.expect_loaded()
+def test_login_negative_incorrect_creds(login_page):
+    login_page.open()
+    login_page.allow_all_cookies_if_shown()
+    login_page.expect_loaded()
+    form = login_page.form()
+    form.login("invalid_user_123456", "wrong_password_123")
+    errs = form.ui.finds(form.ERROR_AREA)
+    assert errs is not None
 
-    def test_navigate_to_login(self):
-        """
-        Open the landing driver -> select the sign up element -> select the login element
-        """
-        self.landing_page.open()
-        self.login_page.allow_all_cookies_if_shown()
-        self.landing_page.go_to_signup()
-        self.signup_page.go_to_login()
-        self.login_page.expect_loaded()
-
-    def test_navigate_to_signup(self):
-        """
-        Open the landing driver -> select the sign up element -> check the driver is loaded
-        """
-        self.landing_page.open()
-        self.login_page.allow_all_cookies_if_shown()
-        self.landing_page.go_to_signup()
-        self.signup_page.expect_loaded()
-
-    def test_login_negative_incorrect_creds(self):
-        """
-        Open the login driver -> check if the driver is loaded -> enter the incorrect credentials -> check the error text
-        """
-        self.login_page.open()
-        self.login_page.allow_all_cookies_if_shown()
-        self.login_page.expect_loaded()
-        self.login_page.login("incorrect_user@example.com", "wrong_password")
-        self.login_page.expect_error_login()
+def test_cookie_banner_optional(landing_page):
+    landing_page.open()
+    _ = landing_page.accept_cookies_if_shown()

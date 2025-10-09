@@ -1,65 +1,22 @@
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
-
-
-"""
-Landing driver
-"""
-
 from __future__ import annotations
 
-from tools.logger.logger import Logger
-from src.core.app_config import AppConfig
-from src.core.ui_driver import UIDriver
+from selenium.webdriver.common.by import By
 from src.pages.base_page import BasePage
-from src.components.login_form import LoginForm
-
-log = Logger(__name__)
+from src.pages.components.cookie_banner import CookieBanner
 
 class LandingPage(BasePage):
-    """
-    Landing driver
-    """
-    def __init__(self, app_config: AppConfig, ui_driver: UIDriver):
-        """
-        / - URI path
+    @property
+    def path(self) -> str:
+        return "/"
 
-        Args:
-            app_config (AppConfig): app config passed in ini config file
-            ui_driver (UIDriver): e.g., PlaywrightDriver adapter
-        """
-        super().__init__(app_config, "/", ui_driver)
-        self.login_form_root = self.locator('form[id="loginForm"]')
-        self.signup_link = self.locator('a[href="/accounts/emailsignup/"]')
-        self.landing_image = self.locator('img[src="/images/assets_DO_NOT_HARDCODE/lox_brand/landing-2x.png"]')
+    LOGIN_LINK = (By.CSS_SELECTOR, 'a[href="/accounts/login/?source=auth_switcher"]')
+    SIGNUP_LINK = (By.CSS_SELECTOR, 'a[href="/accounts/emailsignup/"]')
+    HERO_IMG = (By.CSS_SELECTOR, 'img[src*="/images/"]')
 
-    def login(self, username: str, password: str) -> None:
-        """
-        Log in
-        """
-        expect(self.login_form_root).to_be_visible()
-        login_form = LoginForm(self.login_form_root, self)
-        login_form.login(username, password)
-
-    def expect_error_login(self) -> None:
-        """
-        Verifying if error test is shown when login failed due to incorrect credentials
-        """
-        expect(self.login_form_root).to_be_visible()
-        login_form = LoginForm(self.login_form_root, self)
-        login_form.expect_error_login()
-
-    def go_to_signup(self) -> None:
-        """
-        Go to the Sign up driver
-        """
-        log.info("Go to the Sign up driver")
-        self.signup_link.click()
+    def accept_cookies_if_shown(self) -> bool:
+        return CookieBanner(self.driver).accept_if_present()
 
     def expect_loaded(self) -> None:
-        """
-        Verifying if the Log in driver's landing image is shown
-        """
-        log.info("Verifying if the Log in driver's landing image is shown")
-        expect(self.landing_image).to_be_visible()
+        self.ui.wait_for_dom_ready()
+        self.ui.wait_visible(self.LOGIN_LINK)
+        self.ui.wait_visible(self.SIGNUP_LINK)

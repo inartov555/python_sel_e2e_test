@@ -1,64 +1,25 @@
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
-
-
-"""
-Login driver
-"""
-
 from __future__ import annotations
 
-from tools.logger.logger import Logger
-from src.core.app_config import AppConfig
-from src.core.ui_driver import UIDriver
+from selenium.webdriver.common.by import By
 from src.pages.base_page import BasePage
-from src.components.login_form import LoginForm
-
-log = Logger(__name__)
+from src.pages.components.login_form import LoginForm
+from src.pages.components.cookie_banner import CookieBanner
 
 class LoginPage(BasePage):
-    """
-    Login driver
-    """
-    def __init__(self, app_config: AppConfig, ui_driver: UIDriver):
-        """
-        /accounts/login/ - URI path
+    @property
+    def path(self) -> str:
+        return "/accounts/login/"
 
-        Args:
-            app_config (AppConfig): app config passed in ini config file
-            ui_driver (UIDriver): e.g., PlaywrightDriver adapter
-        """
-        super().__init__(app_config, "/accounts/login/", ui_driver)
-        self.login_form_root = self.locator('form[id="loginForm"]')
-        self.allow_all_cookies_button = self.locator('button[class="_a9-- _ap36 _asz1"]')
+    FORM = LoginForm
+    FORGOT_PASSWORD = (By.CSS_SELECTOR, 'a[href="/accounts/password/reset/"]')
 
-    def login(self, username: str, password: str) -> None:
-        """
-        Log in
-        """
-        login_form = LoginForm(self.login_form_root, self)
-        login_form.login(username, password)
-
-    def expect_error_login(self) -> None:
-        """
-        Verifying if error test is shown when login failed due to incorrect credentials
-        """
-        login_form = LoginForm(self.login_form_root, self)
-        login_form.expect_error_login()
+    def allow_all_cookies_if_shown(self) -> bool:
+        return CookieBanner(self.driver).accept_if_present()
 
     def expect_loaded(self) -> None:
-        """
-        Verifying if the Log in driver is shown
-        """
-        log.info("Verifying if the Log in driver is shown")
-        login_form = LoginForm(self.login_form_root, self)
-        login_form.expect_loaded()
+        self.ui.wait_for_dom_ready()
+        self.ui.wait_visible((By.CSS_SELECTOR, "form#loginForm"))
+        self.ui.wait_visible(self.FORGOT_PASSWORD)
 
-    def allow_all_cookies_if_shown(self) -> None:
-        """
-        Confirming the allow cookies overlay, if shown
-        """
-        log.info("Confirming the allow cookies overlay, if shown")
-        if self.allow_all_cookies_button.is_visible():
-            self.allow_all_cookies_button.click()
+    def form(self) -> LoginForm:
+        return self.FORM(self.driver)

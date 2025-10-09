@@ -1,148 +1,50 @@
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
-
-
-"""
-conftest.py file
-"""
-
 import os
-from configparser import ConfigParser, ExtendedInterpolation
+from typing import Generator
 
 import pytest
+from selenium.webdriver.remote.webdriver import WebDriver
 
-from src.core.app_config import AppConfig
-from tools.temp_encr import decrypt
-from tools.logger.logger import Logger
-from tools.file_utils import FileUtils
-
-log = Logger(__name__)
-
-# Register fixture modules so tests can use them without importing symbols
-pytest_plugins = [
-    "src.pages.conftest",
-    "src.pages.private.conftest",
-]
-
-@pytest.fixture(autouse=True, scope="session")
-def add_loggers():
-    """
-    The fixture to configure loggers
-    It uses built-in pytest arguments to configure loggigng level and files
-
-    Parameters:
-        log_level or --log-level general log level for capturing
-        log_file_level or --log-file-level  level of log to be stored to a file. Usually lower than general log
-        log_file or --log-file  path where logs will be saved
-    """
-    artifacts_folder_default = os.getenv("HOST_ARTIFACTS")
-    log_level = "DEBUG"
-    log_file_level = "DEBUG"
-    log_file = os.path.join(FileUtils.timestamped_path("pytest", "log", artifacts_folder_default))
-    log.setup_cli_handler(level=log_level)
-    log.setup_filehandler(level=log_file_level, file_name=log_file)
-    log.info(f"General loglevel: '{log_level}', File: '{log_file_level}'")
-    log.info(f"Test logs will be stored: '{log_file}'")
-
-def validate_app_config_params(**kwargs) -> None:
-    """
-    Validation of the config parameters
-    """
-    if not kwargs.get("username"):
-        raise ValueError("username parameter is required for tests")
-    if not kwargs.get("password"):
-        raise ValueError("password parameter is required for tests")
-
-@pytest.fixture(scope="session")
-def app_config(pytestconfig) -> AppConfig:
-    """
-    Set and get AppConfig from ini config
-    """
-    ini_config_file = pytestconfig.getoption("--ini-config")
-    log.info(f"Reading config properties from '{ini_config_file}' and storing to a data class")
-    result_dict = {}
-    cfg = ConfigParser(interpolation=ExtendedInterpolation())
-    cfg.read(ini_config_file)
-    result_dict["wait_to_handle_capture_manually"] = cfg.getboolean("pytest",
-                                                                    "wait_to_handle_capture_manually",
-                                                                    fallback=False)
-    result_dict["action_timeout"] = cfg.getfloat("pytest", "action_timeout", fallback=15000.0)
-    result_dict["navigation_timeout"] = cfg.getfloat("pytest", "navigation_timeout", fallback=15000.0)
-    result_dict["assert_timeout"] = cfg.getfloat("pytest", "assert_timeout", fallback=15000.0)
-    result_dict["browser"] = cfg.get("pytest", "browser", fallback="chrome")
-    result_dict["base_url"] = cfg.get("pytest", "base_url", fallback="https://www.instagram.com")
-    result_dict["is_headless"] = cfg.getboolean("pytest", "is_headless", fallback=False)
-    result_dict["width"] = cfg.getint("pytest", "width", fallback=1920)
-    result_dict["height"] = cfg.getint("pytest", "height", fallback=1080)
-    result_dict["username"] = cfg.get("pytest", "username")
-    result_dict["password"] = cfg.get("pytest", "password")
-    validate_app_config_params(**result_dict)
-    result_dict["password"] = decrypt(result_dict.get("password"))
-    return AppConfig(**result_dict)
+from src.core.driver import build_driver
+from src.pages.public.landing_page import LandingPage
+from src.pages.public.login_page import LoginPage
+from src.pages.public.signup_page import SignupPage
+from src.pages.private.home_feed_page import HomeFeedPage
 
 def pytest_addoption(parser):
-    """
-    Supported options
-    """
-    parser.addoption("--ini-config", action="store", default="pytest.ini", help="The path to the *.ini config file")
+    parser.addoption("--browser", action="store", default="chrome",
+                     help="chrome|chromium|msedge|firefox|safari")
+    parser.addoption("--headed", action="store_true", default=False,
+                     help="Show browser UI (disable headless)")
+    parser.addoption("--username", action="store", default=None, help="Instagram username")
+    parser.addoption("--password", action="store", default=None, help="Instagram password")
 
 @pytest.fixture(scope="session")
-def screenshot_dir() -> str:
-    """
-    Getting screenshot directory
-    """
-    artifacts_folder_default = os.getenv("HOST_ARTIFACTS")
-    os.makedirs(artifacts_folder_default, exist_ok=True)
-    return artifacts_folder_default
+def driver(request) -> Generator[WebDriver, None, None]:
+    browser = request.config.getoption("--browser")
+    headed = request.config.getoption("--headed")
+    drv = build_driver(browser=browser, headless=(not headed), window_size=(1920, 1080))
+    yield drv
+    drv.quit()
 
-def get_browser(playwright, request) -> Browser:
-    """
-    Set up a browser and return it
-    """
-    log.info("Getting a browser basing on the config properties")
-    _app_config = request.getfixturevalue("app_config")
-    if _app_config.browser in ("chromium", "chrome", "msedge"):
-        # Chromium Google Chrome, MS Edge
-        if _app_config.is_headless:
-            args = [f"--window-size={_app_config.width},{_app_config.height}"]
-        else:
-            args = []
-        browser = playwright.chromium.launch(headless=_app_config.is_headless,
-                                             args=args)
-    elif _app_config.browser in ("firefox"):
-        # Firefox
-        if _app_config.is_headless:
-            args = [f"--window-size={_app_config.width},{_app_config.height}"]
-        else:
-            args = []
-        browser = playwright.firefox.launch(headless=_app_config.is_headless,
-                                            args=args)
-    elif _app_config.browser in ("webkit", "safari"):
-        # WebKit, Safari
-        browser = playwright.webkit.launch(headless=_app_config.is_headless)
-    else:
-        raise ValueError(f"browser config param contains incorrect value: {_app_config.browser}")
-    if _app_config.browser in ("webkit", "safari") or not _app_config.is_headless:
-        context = browser.new_context(viewport={"width": _app_config.width, "height": _app_config.height})
-    else:
-        context = browser.new_context(viewport=None)
-    driver = context.new_page()
-    # Setting default timeouts
-    context.set_default_navigation_timeout(_app_config.navigation_timeout)
-    context.set_default_timeout(_app_config.action_timeout)
-    driver.set_default_navigation_timeout(_app_config.navigation_timeout)
-    driver.set_default_timeout(_app_config.action_timeout)
-    expect.set_options(timeout=_app_config.assert_timeout)
-    request.node.stash["page_obj_fresh"] = driver  # it is needed to pass an acutal driver to BasePage objects
-    log.info(f"{_app_config.browser} browser is selected")
-    return browser
+@pytest.fixture
+def landing_page(driver) -> LandingPage:
+    return LandingPage(driver)
 
-@pytest.fixture(autouse=True, scope="function")
-def browser_setup(playwright, request):
-    """
-    Set the browser driver
-    """
-    browser = get_browser(playwright, request)
-    yield browser
-    browser.close()
+@pytest.fixture
+def login_page(driver) -> LoginPage:
+    return LoginPage(driver)
+
+@pytest.fixture
+def signup_page(driver) -> SignupPage:
+    return SignupPage(driver)
+
+@pytest.fixture
+def home_feed_page(driver, request) -> HomeFeedPage:
+    return HomeFeedPage(driver)
+
+@pytest.fixture
+def creds(request):
+    return {
+        "username": request.config.getoption("--username") or os.getenv("IG_USERNAME"),
+        "password": request.config.getoption("--password") or os.getenv("IG_PASSWORD"),
+    }
