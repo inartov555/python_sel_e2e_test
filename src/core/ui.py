@@ -3,9 +3,8 @@ Selenium driver adapter
 """
 
 from __future__ import annotations
-from typing import Tuple, List
+from typing import List
 
-from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import WebDriverWait
@@ -42,15 +41,17 @@ class Ui:
         Waiting till element becomes visible
         """
         if root is None:
-            return WebDriverWait(self.driver, timeout or self.wait._timeout).until(EC.visibility_of_element_located(sel))
-        WebDriverWait(self.driver, timeout or self.wait._timeout).until(lambda d: any(e.is_displayed() for e in root.find_elements(*sel)))
+            return WebDriverWait(self.driver, timeout).until(
+                EC.visibility_of_element_located(sel))
+        WebDriverWait(self.driver, timeout).until(
+            lambda d: any(e.is_displayed() for e in root.find_elements(*sel)))
         return next(e for e in root.find_elements(*sel) if e.is_displayed())
 
     def wait_clickable(self, sel: tuple, timeout: int = 15) -> WebElement:
         """
         Waiting till element becomes clickable
         """
-        return WebDriverWait(self.driver, timeout or self.wait._timeout).until(EC.element_to_be_clickable(sel))
+        return WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(sel))
 
     def wait_for_dom_ready(self, timeout: int = 20) -> None:
         """

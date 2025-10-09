@@ -4,10 +4,9 @@ Base methods for derived components
 
 from __future__ import annotations
 
-from selenium.webdriver.common.by import By
-from selenium.webdriver.remote.webdriver import WebDriver
-from src.core.ui import Ui
+from selenium.webdriver.remote.webelement import WebElement
 
+from src.core.ui import Ui
 from tools.logger.logger import Logger
 
 

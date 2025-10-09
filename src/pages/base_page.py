@@ -4,9 +4,8 @@ Base methods that can be used by derived pages
 
 from __future__ import annotations
 
-from selenium.webdriver.remote.webdriver import WebDriver
+from src.core.app_config import AppConfig
 from src.core.ui import Ui
-
 from tools.logger.logger import Logger
 
 
@@ -38,3 +37,6 @@ class BasePage:
         log.info(f"Opening {self.full_url} URL")
         self.ui_driver.open(self.full_url, 20)
         return self
+
+    def login(self) -> None:
+        return None

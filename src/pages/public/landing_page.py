@@ -6,6 +6,8 @@ from __future__ import annotations
 
 from selenium.webdriver.common.by import By
 
+from src.core.ui import Ui
+from src.core.app_config import AppConfig
 from src.pages.base_page import BasePage
 from src.pages.components.cookie_banner import CookieBanner
 from src.pages.components.login_form import LoginForm
@@ -28,16 +30,20 @@ class LandingPage(BasePage):
             ui_driver (Ui): selenenium web driver adapter
         """
         super().__init__(app_config, "/", ui_driver)
-        self.FORM = LoginForm
-        self.LOGIN_LINK = (By.CSS_SELECTOR, 'a[href="/accounts/login/?source=auth_switcher"]')
-        self.SIGNUP_LINK = (By.CSS_SELECTOR, 'a[href="/accounts/emailsignup/"]')
-        self.HERO_IMG = (By.CSS_SELECTOR, 'img[src*="/images/"]')
-        self.LANDING_IMAGE = (By.CSS_SELECTOR, 'img[src="/images/assets_DO_NOT_HARDCODE/lox_brand/landing-2x.png"]')
+        self.login_form = LoginForm
+        self.signup_link = (By.CSS_SELECTOR, 'a[href="/accounts/emailsignup/"]')
+        self.landing_img = (By.CSS_SELECTOR, 'img[src="/images/assets_DO_NOT_HARDCODE/lox_brand/landing-2x.png"]')
 
     def form(self) -> LoginForm:
-        return self.FORM(self.ui_driver)
+        """
+        Get login form
+        """
+        return self.login_form(self.ui_driver)
 
     def accept_cookies_if_shown(self) -> bool:
+        """
+        Accepting cookie banner, if shown
+        """
         return CookieBanner(self.ui_driver).accept_if_present()
 
     def expect_loaded(self) -> None:
@@ -45,7 +51,7 @@ class LandingPage(BasePage):
         Verifying if the Log in page's landing image is shown
         """
         log.info("Verifying if the Log in page's landing image is shown")
-        self.ui_driver.wait_visible(self.LANDING_IMAGE)
+        self.ui_driver.wait_visible(self.landing_img)
 
     def login(self, username: str, password: str) -> None:
         """
@@ -66,5 +72,5 @@ class LandingPage(BasePage):
         Go to the Sign up page
         """
         log.info("Go to the Sign up page")
-        self.ui_driver.wait_visible(self.SIGNUP_LINK)
-        self.ui_driver.click(self.SIGNUP_LINK)
+        self.ui_driver.wait_visible(self.signup_link)
+        self.ui_driver.click(self.signup_link)

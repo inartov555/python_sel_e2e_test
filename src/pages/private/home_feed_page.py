@@ -32,10 +32,10 @@ class HomeFeedPage(BasePage):
             ui_driver (Ui): selenenium web driver adapter
         """
         super().__init__(app_config, "/", ui_driver)
-        self.HOME_TAB = (By.XPATH, "//a[@href='/?next=%2F' or @href='/']")
-        self.MENU_MORE = (By.XPATH, "//*[normalize-space(.)='More']/ancestor::a[@role='link'][1]")
-        self.POST_CONTAINER   = (By.CSS_SELECTOR, "article")
-        self.MENU_OVERLAYROOT = (By.CSS_SELECTOR, 'div[role="dialog"]')
+        self.home_tab = (By.XPATH, "//a[@href='/?next=%2F' or @href='/']")
+        self.menu_more = (By.XPATH, "//*[normalize-space(.)='More']/ancestor::a[@role='link'][1]")
+        self.post_container   = (By.CSS_SELECTOR, "article")
+        self.menu_overlay_root = (By.CSS_SELECTOR, 'div[role="dialog"]')
 
     @property
     def first_post(self) -> PostCard:
@@ -43,10 +43,8 @@ class HomeFeedPage(BasePage):
         Get the 1st post (Selenium: the wait returns the first matching WebElement)
         """
         result = None
-        print(f"\n\n\n self.posts = {self.posts} \n\n\n")
         if self.posts:
             result = self.posts[0]
-        print(f"\n\n\n result = {result} \n\n\n")
         return result
 
     @property
@@ -56,9 +54,9 @@ class HomeFeedPage(BasePage):
         """
         # Ensure at least one is present before grabbing the list
         WebDriverWait(self.ui_driver.driver, 10).until(
-            EC.presence_of_element_located(self.POST_CONTAINER)
+            EC.presence_of_element_located(self.post_container)
         )
-        elements = self.ui_driver.finds(self.POST_CONTAINER)
+        elements = self.ui_driver.finds(self.post_container)
         if elements:
             visible_posts = [PostCard(self.ui_driver, elem) for elem in elements]
         else:
@@ -71,16 +69,16 @@ class HomeFeedPage(BasePage):
         Get the 'More' overlay root
         """
         root = WebDriverWait(self.ui_driver.driver, 10).until(
-            EC.presence_of_element_located(self.MENU_OVERLAYROOT)
+            EC.presence_of_element_located(self.menu_overlay_root)
         )
-        return MenuOverlay(self.ui_driver)
+        return MenuOverlay(self.ui_driver, root)
 
     def go_to_home_tab(self) -> None:
         """
         Call this method only if the Home tab is not focused
         """
         WebDriverWait(self.ui_driver.driver, 10).until(
-            EC.element_to_be_clickable(self.HOME_TAB)
+            EC.element_to_be_clickable(self.home_tab)
         ).click()
 
     def open_menu_overlay(self) -> None:
@@ -88,7 +86,7 @@ class HomeFeedPage(BasePage):
         Open the 'More' overlay
         """
         WebDriverWait(self.ui_driver.driver, 10).until(
-            EC.element_to_be_clickable(self.MENU_MORE)
+            EC.element_to_be_clickable(self.menu_more)
         ).click()
 
     def expect_home_tab_visible(self) -> None:
@@ -96,7 +94,7 @@ class HomeFeedPage(BasePage):
         Check if the Home tab is visible
         """
         WebDriverWait(self.ui_driver.driver, 10).until(
-            EC.visibility_of_element_located(self.HOME_TAB)
+            EC.visibility_of_element_located(self.home_tab)
         )
 
     def expect_feed_visible(self) -> None:
@@ -104,5 +102,5 @@ class HomeFeedPage(BasePage):
         Check if the 1st post is visible
         """
         WebDriverWait(self.ui_driver.driver, 10).until(
-            EC.visibility_of_element_located(self.POST_CONTAINER)
+            EC.visibility_of_element_located(self.post_container)
         )

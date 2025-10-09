@@ -14,16 +14,10 @@ from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.safari.options import Options as SafariOptions
 from selenium.webdriver.remote.webdriver import WebDriver
 
-
 from src.core.app_config import AppConfig
-from tools.temp_encr import decrypt
-from tools.logger.logger import Logger
 from tools.file_utils import FileUtils
-from src.core.driver import build_driver
-from src.pages.public.landing_page import LandingPage
-from src.pages.public.login_page import LoginPage
-from src.pages.public.signup_page import SignupPage
-from src.pages.private.home_feed_page import HomeFeedPage
+from tools.logger.logger import Logger
+from tools.temp_encr import decrypt
 
 
 log = Logger(__name__)

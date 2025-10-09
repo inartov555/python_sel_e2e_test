@@ -6,7 +6,8 @@ from __future__ import annotations
 
 from selenium.webdriver.common.by import By
 
-from src.pages.base_page import BasePage
+from src.core.ui import Ui
+from src.core.app_config import AppConfig
 from src.pages.components.cookie_banner import CookieBanner
 from tools.logger.logger import Logger
 
@@ -27,12 +28,12 @@ class SignupPage(BasePage):
             ui_driver (Ui): selenenium web driver adapter
         """
         super().__init__(app_config, "/accounts/emailsignup/", ui_driver)
-        self.EMAIL_OR_PHONE = (By.CSS_SELECTOR, 'input[name="emailOrPhone"]')
-        self.FULL_NAME = (By.CSS_SELECTOR, 'input[name="fullName"]')
-        self.USERNAME = (By.CSS_SELECTOR, 'input[name="username"]')
-        self.PASSWORD = (By.CSS_SELECTOR, 'input[name="password"]')
+        self.email_or_phone = (By.CSS_SELECTOR, 'input[name="emailOrPhone"]')
+        self.full_name = (By.CSS_SELECTOR, 'input[name="fullName"]')
+        self.username = (By.CSS_SELECTOR, 'input[name="username"]')
+        self.password = (By.CSS_SELECTOR, 'input[name="password"]')
         self.SUBMIT = (By.CSS_SELECTOR, 'button[type="submit"]')
-        self.LOGIN_LINK = (By.CSS_SELECTOR, 'a[href="/accounts/login/?source=auth_switcher"]')
+        self.login_link = (By.CSS_SELECTOR, 'a[href="/accounts/login/?source=auth_switcher"]')
 
     def accept_cookies_if_shown(self) -> bool:
         """
@@ -45,15 +46,15 @@ class SignupPage(BasePage):
         Checking if page has some elements
         """
         self.ui_driver.wait_for_dom_ready()
-        self.ui_driver.wait_visible(self.EMAIL_OR_PHONE)
-        self.ui_driver.wait_visible(self.USERNAME)
-        self.ui_driver.wait_visible(self.PASSWORD)
-        self.ui_driver.wait_visible(self.LOGIN_LINK)
+        self.ui_driver.wait_visible(self.email_or_phone)
+        self.ui_driver.wait_visible(self.username)
+        self.ui_driver.wait_visible(self.password)
+        self.ui_driver.wait_visible(self.login_link)
 
     def go_to_login(self) -> None:
         """
         Go to login
         """
         log.info("Go to log in")
-        self.ui_driver.wait_clickable(self.LOGIN_LINK)
-        self.ui_driver.click(self.LOGIN_LINK)
+        self.ui_driver.wait_clickable(self.login_link)
+        self.ui_driver.click(self.login_link)

@@ -27,15 +27,15 @@ class LoginForm(BaseComponent):
             web_elem (WebElement): web element
         """
         super().__init__(ui_driver, web_elem)
-        self.ROOT = (By.CSS_SELECTOR, "form#loginForm")
-        self.USERNAME = (By.CSS_SELECTOR, 'input[name="username"]')
-        self.PASSWORD = (By.CSS_SELECTOR, 'input[name="password"]')
-        self.SUBMIT = (By.CSS_SELECTOR, 'button[type="submit"]')
-        self.ERROR_AREA = (
+        self.root = (By.CSS_SELECTOR, "form#loginForm")
+        self.username = (By.CSS_SELECTOR, 'input[name="username"]')
+        self.password = (By.CSS_SELECTOR, 'input[name="password"]')
+        self.submit = (By.CSS_SELECTOR, 'button[type="submit"]')
+        self.error_area = (
             By.XPATH,
             '//*[@role="alert"] | //*[@id="slfErrorAlert"] | //div[contains(normalize-space(.), "incorrect")]'
         )
-        self.INCORRECT_LOGIN_ERROR_TEXT = (
+        self.incorrect_login_error_text = (
             By.XPATH,
             '//*[normalize-space(.)="Sorry, your password was incorrect. Please double-check your password."]'
         )
@@ -44,24 +44,24 @@ class LoginForm(BaseComponent):
         """
         Checking if there are some elemeing in the login form
         """
-        self.ui_driver.wait_visible(self.ROOT)
-        self.ui_driver.wait_visible(self.USERNAME)
-        self.ui_driver.wait_visible(self.PASSWORD)
+        self.ui_driver.wait_visible(self.root)
+        self.ui_driver.wait_visible(self.username)
+        self.ui_driver.wait_visible(self.password)
 
     def login(self, username: str, password: str) -> None:
         """
         Logging in
         """
-        self.ui_driver.clear(self.USERNAME)
-        self.ui_driver.send_keys(username, self.USERNAME)
-        self.ui_driver.clear(self.PASSWORD)
-        self.ui_driver.send_keys(password, self.PASSWORD)
-        self.ui_driver.click(self.SUBMIT)
+        self.ui_driver.clear(self.username)
+        self.ui_driver.send_keys(username, self.username)
+        self.ui_driver.clear(self.password)
+        self.ui_driver.send_keys(password, self.password)
+        self.ui_driver.click(self.submit)
 
     def expect_error_login(self) -> None:
         """
         Verifying if error test is shown when login failed due to incorrect credentials
         """
         log.info("Verifying if error log in text is shown")
-        if not self.ui_driver.wait_visible(self.INCORRECT_LOGIN_ERROR_TEXT):
-            raise AssertionError(f"self.INCORRECT_LOGIN_ERROR_TEXT element is not visible")
+        if not self.ui_driver.wait_visible(self.incorrect_login_error_text):
+            raise AssertionError(f"{self.incorrect_login_error_text element} is not visible")

@@ -6,7 +6,8 @@ from __future__ import annotations
 
 from selenium.webdriver.common.by import By
 
-from src.pages.base_page import BasePage
+from src.core.ui import Ui
+from src.core.app_config import AppConfig
 from src.pages.components.login_form import LoginForm
 from src.pages.components.cookie_banner import CookieBanner
 from tools.logger.logger import Logger
@@ -28,8 +29,8 @@ class LoginPage(BasePage):
             ui_driver (Ui): selenenium web driver adapter
         """
         super().__init__(app_config, "/accounts/login/", ui_driver)
-        self.FORM = LoginForm
-        self.FORGOT_PASSWORD = (By.CSS_SELECTOR, 'a[href="/accounts/password/reset/"]')
+        self.login_form = LoginForm
+        self.forgot_password = (By.CSS_SELECTOR, 'a[href="/accounts/password/reset/"]')
 
     def allow_all_cookies_if_shown(self) -> bool:
         """
@@ -37,13 +38,11 @@ class LoginPage(BasePage):
         """
         return CookieBanner(self.ui_driver).accept_if_present()
 
-    def expect_loaded(self) -> None:
-        self.ui_driver.wait_for_dom_ready()
-        self.ui_driver.wait_visible((By.CSS_SELECTOR, "form#loginForm"))
-        self.ui_driver.wait_visible(self.FORGOT_PASSWORD)
-
     def form(self) -> LoginForm:
-        return self.FORM(self.ui_driver)
+        """
+        Get login form
+        """
+        return self.login_form(self.ui_driver)
 
     def login(self, username: str, password: str) -> None:
         """

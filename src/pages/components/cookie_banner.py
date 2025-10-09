@@ -23,13 +23,13 @@ class CookieBanner(BaseComponent):
             web_elem (WebElement): web element
         """
         super().__init__(ui_driver, web_elem)
-        self.ALLOW_ALL = (By.CSS_SELECTOR, 'button._a9--._ap36._asz1')
+        self.allow_all = (By.CSS_SELECTOR, 'button._a9--._ap36._asz1')
 
     def accept_if_present(self) -> bool:
         """
         Accepting cookie banner, if shown
         """
-        elem = self.ui_driver.find(self.ALLOW_ALL)
+        elem = self.ui_driver.find(self.allow_all)
         if elem:
             try:
                 if elem.is_displayed():
