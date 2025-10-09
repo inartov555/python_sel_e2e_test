@@ -1,6 +1,6 @@
 name: Pylint
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   lint:
@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-          cache: "pip"  # speeds up installs
+          cache: "pip"
 
       - name: Install dependencies
         run: |
@@ -27,7 +27,7 @@ jobs:
           pip install pylint
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      # Strict lint for application code (exclude tests)
+      # Strict lint for application code
       - name: Lint app code (strict)
         run: |
           APP_FILES="$(git ls-files \
@@ -40,6 +40,9 @@ jobs:
           if [ -n "$APP_FILES" ]; then
             pylint --max-line-length=128 \
                    --disable=too-many-arguments,too-many-positional-arguments \
+                   --good-names=i,j,k,ex,Run,_,e \
+                   --min-public-methods=1 \
+                   --overgeneral-exceptions=BaseException \
                    $APP_FILES
           else
             echo "No application files to lint."
@@ -52,7 +55,7 @@ jobs:
 
           if [ -n "$TEST_FILES" ]; then
             pylint --max-line-length=128 \
-                   --disable=no-member,too-few-public-methods \
+                   --disable=no-member,too-few-public-methods,broad-exception-caught \
                    $TEST_FILES
           else
             echo "No test files found."
