@@ -38,5 +38,8 @@ class BasePage:
         self.ui_driver.open(self.full_url, 20)
         return self
 
-    def login(self) -> None:
+    def login(self, username: str, password: str) -> None:
+        """
+        Log in
+        """
         return None

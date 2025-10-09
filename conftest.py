@@ -3,7 +3,6 @@ conftest.py file
 """
 
 import os
-from typing import Generator
 from configparser import ConfigParser, ExtendedInterpolation
 
 import pytest

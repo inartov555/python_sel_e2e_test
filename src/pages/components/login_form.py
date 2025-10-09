@@ -42,7 +42,7 @@ class LoginForm(BaseComponent):
 
     def expect_loaded(self) -> None:
         """
-        Checking if there are some elemeing in the login form
+        Checking if there are some elements in the login form
         """
         self.ui_driver.wait_visible(self.root)
         self.ui_driver.wait_visible(self.username)
@@ -64,4 +64,4 @@ class LoginForm(BaseComponent):
         """
         log.info("Verifying if error log in text is shown")
         if not self.ui_driver.wait_visible(self.incorrect_login_error_text):
-            raise AssertionError(f"{self.incorrect_login_error_text element} is not visible")
+            raise AssertionError(f"{self.incorrect_login_error_text} element is not visible")

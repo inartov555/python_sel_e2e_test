@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 
 from src.core.ui import Ui
 from src.core.app_config import AppConfig
+from src.pages.base_page import BasePage
 from src.pages.components.login_form import LoginForm
 from src.pages.components.cookie_banner import CookieBanner
 from tools.logger.logger import Logger

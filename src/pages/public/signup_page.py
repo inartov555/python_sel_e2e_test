@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 
 from src.core.ui import Ui
 from src.core.app_config import AppConfig
+from src.pages.base_page import BasePage
 from src.pages.components.cookie_banner import CookieBanner
 from tools.logger.logger import Logger
 
@@ -32,7 +33,7 @@ class SignupPage(BasePage):
         self.full_name = (By.CSS_SELECTOR, 'input[name="fullName"]')
         self.username = (By.CSS_SELECTOR, 'input[name="username"]')
         self.password = (By.CSS_SELECTOR, 'input[name="password"]')
-        self.SUBMIT = (By.CSS_SELECTOR, 'button[type="submit"]')
+        self.submit = (By.CSS_SELECTOR, 'button[type="submit"]')
         self.login_link = (By.CSS_SELECTOR, 'a[href="/accounts/login/?source=auth_switcher"]')
 
     def accept_cookies_if_shown(self) -> bool:
