@@ -1,23 +1,40 @@
+"""
+Base methods that can be used by derived pages
+"""
+
 from __future__ import annotations
 
 from selenium.webdriver.remote.webdriver import WebDriver
 from src.core.ui import Ui
 
+from tools.logger.logger import Logger
+
+
+log = Logger(__name__)
+
+
 class BasePage:
-    BASE_URL = "https://www.instagram.com"
+    """
+    Base methods that can be used by derived pages
+    """
 
-    def __init__(self, driver: WebDriver) -> None:
-        self.driver = driver
-        self.ui = Ui(driver)
+    def __init__(self, app_config: AppConfig, uri_path: str, ui_driver: Ui):
+        """
+        Args:
+            app_config (AppConfig): app config passed in ini config file
+            uri_path (str): e.g. /accounts/login/
+            ui_driver (Ui): selenenium web driver adapter
+        """
+        self.ui_driver = ui_driver
+        self.app_config = app_config
+        self.base_url = self.app_config.base_url
+        self.uri_path = uri_path
+        self.full_url = self.base_url + self.uri_path
 
-    @property
-    def path(self) -> str:
-        return "/"
-
-    @property
-    def url(self) -> str:
-        return f"{self.BASE_URL}{self.path}"
-
-    def open(self) -> None:
-        self.driver.get(self.url)
-        self.ui.wait_for_dom_ready()
+    def open(self) -> "BasePage":
+        """
+        Opening a page
+        """
+        log.info(f"Opening {self.full_url} URL")
+        self.ui_driver.open(self.full_url, 20)
+        return self
