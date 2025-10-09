@@ -4,12 +4,12 @@ conftest.py
 
 import pytest
 
+from src.core.ui import Ui
 from src.pages.public.landing_page import LandingPage
 from src.pages.public.login_page import LoginPage
 from src.pages.public.signup_page import SignupPage
 from src.pages.private.home_feed_page import HomeFeedPage
 from tools.logger.logger import Logger
-from src.core.ui import Ui
 
 
 log = Logger(__name__)
