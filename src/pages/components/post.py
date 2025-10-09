@@ -25,11 +25,11 @@ class PostCard(BaseComponent):
             web_elem (WebElement): it's needed only if you 
         """
         super().__init__(ui_driver, web_elem)
-        self.like_button = (By.XPATH, './/div[@role="button"][.//svg[@aria-label="Like"]]')
-        self.unlike_button = (By.XPATH, './/div[@role="button"][.//svg[@aria-label="Unlike"]]')
-        self.save_button = (By.XPATH, './/div[@role="button"][.//svg[@aria-label="Save"]]')
-        self.remove_button = (By.XPATH, './/div[@role="button"][.//svg[@aria-label="Remove"]]')
-        self.comment_button = (By.XPATH, './/div[@role="button"][.//svg[@aria-label="Comment"]]')
+        self.like_button = (By.XPATH, '//div[@role="button"][.//svg[@aria-label="Like"]]')
+        self.unlike_button = (By.XPATH, '//div[@role="button"][.//svg[@aria-label="Unlike"]]')
+        self.save_button = (By.XPATH, '//div[@role="button"][.//svg[@aria-label="Save"]]')
+        self.remove_button = (By.XPATH, '//div[@role="button"][.//svg[@aria-label="Remove"]]')
+        self.comment_button = (By.XPATH, '//div[@role="button"][.//svg[@aria-label="Comment"]]')
         self.liked_by_link = (By.CSS_SELECTOR, 'a[href*="/liked_by/"]')
 
     def scroll_to_element_liked_by(self) -> None:
@@ -68,7 +68,7 @@ class PostCard(BaseComponent):
         Removing a post from saved ones
         """
         self.ui_driver.click(self.remove_button, self.web_elem)
-        self.ui_driver.wait_visible(self.save_button, self.web_elem)
+        self.ui_driver.wait_clickable(self.save_button, self.web_elem)
 
     def open_comments(self) -> None:
         """

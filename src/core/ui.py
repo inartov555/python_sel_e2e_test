@@ -43,9 +43,9 @@ class Ui:
         if root is None:
             return WebDriverWait(self.driver, timeout).until(
                 EC.visibility_of_element_located(sel))
-        WebDriverWait(self.driver, timeout).until(
-            lambda d: any(e.is_displayed() for e in root.find_elements(*sel)))
-        return next(e for e in root.find_elements(*sel) if e.is_displayed())
+        elem = WebDriverWait(self.driver, timeout).until(
+            lambda d: any(e.is_displayed() for e in root.find_element(*sel)))
+        return elem.is_displayed()
 
     def wait_clickable(self, sel: tuple, timeout: int = 15) -> WebElement:
         """

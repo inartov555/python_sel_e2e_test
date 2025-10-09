@@ -34,6 +34,7 @@ def setup_cleanup_signin_signout(request) -> None:
     request.cls.home_page.open()
     request.cls.home_page.open_menu_overlay()
     request.cls.home_page.menu_overlay.log_out()
+    request.cls.login_page.allow_all_cookies_if_shown()
     request.cls.landing_page.expect_loaded()
 
 
