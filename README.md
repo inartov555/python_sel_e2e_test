@@ -1,16 +1,20 @@
 ## What it is
 Automation framework (example).
 
+---
+
 ## Note
  - !!! This is just an example of the code; this framework cannot be used for testing Instagram or running multiple times !!!
 
-## E2E Test Framework (Python + Pytest + Selenium)
+---
 
+## E2E Test Framework (Python + Pytest + Selenium)
 Modern, scalable, and maintainable test framework built with **Pytest** and **Selenium** using **Page Object Model**,
 OOP and SOLID principles.
 
-## How to run
+---
 
+## How to run
 NOTE: When you start the source run_tests.sh script, it copies the project to another directory to avoid adding cached files, and the venv directory to the project folder. 
 
 To start tests, you need:
@@ -26,8 +30,9 @@ To start tests, you need:
    Copied project folder, run results like logs, etc., are located in: `/home/$user_name/TEST1/workspace`. 
    Artifacts (run results, logs, etc.) are located in: `/home/$user_name/TEST1/workspace/artifact`.
 
-## Structure
+---
 
+## Structure
 ```
 python_pytest_selenium_e2e_test/
   src/
@@ -38,8 +43,9 @@ python_pytest_selenium_e2e_test/
   artifacts/       # logs, test results, screenshots, videos, etc.
 ```
 
-## Decisions & Rationale (Summary)
+---
 
+## Decisions & Rationale (Summary)
 - **Page Object + Components**: complex parts of the feed are encapsulated into a `PostCard` component with clear actions 
   (e.g., `like()`, `save()`, `open_comments()`) to favor single responsibility and reusability.
 - **Typing & lint-friendly**: type hints and docstrings added; methods return self or domain objects for fluent usage.
