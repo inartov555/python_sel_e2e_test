@@ -6,7 +6,7 @@
 
 ARTIFACTS_ROOT_FOLDER="TEST1"
 
-# DEFAULT_REPO_PATH="$HOME/python-e2e-test"
+# DEFAULT_REPO_PATH="$HOME/python_pytest_selenium_e2e_test"
 
 # Repo path defaults to $DEFAULT_REPO_PATH
 # if [[ -z "$1" ]]; then
