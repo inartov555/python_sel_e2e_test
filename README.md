@@ -1,6 +1,5 @@
-## Notes:
+## Note:
  - !!! This is just an example of the code, this framework cannot be used for testing Instagram or running multiple times !!!
- - The UI of the web site may change, so tests may not work later
 
 ## E2E Test Framework (Python + Pytest + Selenium)
 
@@ -48,4 +47,3 @@ python_pytest_playwright_e2e_test/
 - **Locators with text**: The text needs to be placed to the localization classes later to support different languages
 
 See [`WHAT_TESTS_DO.md`](./WHAT_TESTS_DO.md) to get the test description.
-See [`TASK_DESCRIPTION.md`](./TASK_DESCRIPTION.md) to get the test description.
