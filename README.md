@@ -4,7 +4,8 @@ Automation framework (example).
 ---
 
 ## Note
- - !!! This is just an example of the code; this framework cannot be used for testing Instagram or running multiple times !!!
+- !!! This is just an example of the code; this framework cannot be used for testing Instagram or running multiple times !!!
+- This framework was transitioned from Playwright to Selenium ( [Selenium version](https://github.com/inartov555/python_sel_mob_web_api_test) )
 
 ---
 
