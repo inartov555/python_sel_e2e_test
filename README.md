@@ -26,7 +26,7 @@ To start tests, you need:
 5. Open a terminal window and run `sudo apt-get install libavif16`
 6. Fill in [`pytest.ini`](./pytest.ini) parameters. 
    To set the `password` parameter, encrypt the account password using [`tools/temp_encr.py`](./tools/temp_encr.py).
-7. Run the `run_tests.sh` file next way: `source run_tests.sh $PATH_TO_THE_PROJECT $PATH_TO_INI_CONFIG` (if you don't pass the ini config file, then the default one is used [`pytest.ini`](./pytest.ini)). 
+7. Run the `run_tests.sh` file next way: `run_tests.sh $PATH_TO_THE_PROJECT $PATH_TO_INI_CONFIG` (if you don't pass the ini config file, then the default one is used [`pytest.ini`](./pytest.ini)). 
    Copied project folder, run results like logs, etc., are located in: `/home/$user_name/TEST1/workspace`. 
    Artifacts (run results, logs, etc.) are located in: `/home/$user_name/TEST1/workspace/artifact`.
 

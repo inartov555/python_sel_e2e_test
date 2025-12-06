@@ -5,25 +5,6 @@
 # Exported variables: HOST_ARTIFACTS, ROOT_VENV, TEST_VENV, COPIED_PROJECT_PATH
 
 ARTIFACTS_ROOT_FOLDER="TEST1"
-
-# DEFAULT_REPO_PATH="$HOME/python_pytest_selenium_e2e_test"
-
-# Repo path defaults to $DEFAULT_REPO_PATH
-# if [[ -z "$1" ]]; then
-#  echo "WARNING: no path passed for the project, defaulting to $DEFAULT_REPO_PATH"
-#  REPO="$DEFAULT_REPO_PATH"
-#  if [[ ! -d "$REPO" ]]; then
-#    echo "ERROR: Default path $DEFAULT_REPO_PATH for the repo does not exist"
-#    return 1
-#  fi
-# elif [[ ! -d "$1" ]]; then
-#  echo "ERROR: Provided path $1 for the repo does not exist"
-#  return 1
-# else
-#  REPO="$1"
-#  echo "Using $REPO path for the repo"
-# fi
-
 REPO="$(pwd)"
 echo "REPO = '$REPO'"
 
@@ -34,7 +15,9 @@ PROJECT_FOLDER_NAME="${REPO##*/}"
 HOST_WORKSPACE="$HOME/$ARTIFACTS_ROOT_FOLDER/workspace"
 # path where artifacts will be stored
 HOST_ARTIFACTS="$HOST_WORKSPACE/artifact"
-export HOST_ARTIFACTS="$HOST_ARTIFACTS"
+TIMESTAMP_RESULTS="run-$(date +%Y%m%d-%H%M%S)"
+
+export HOST_ARTIFACTS="$HOST_ARTIFACTS/$TIMESTAMP_RESULTS"
 export COPIED_PROJECT_PATH="$HOST_WORKSPACE/$PROJECT_FOLDER_NAME"
 
 echo "Host workspace directory (copied project + logs, screenshots, etc.):"
@@ -78,7 +61,6 @@ echo "Installing module requirements..."
 echo ""
 python3 -m pip install --upgrade pip
 python3 -m pip install -r "$BASE_REQ_FILE"
-playwright install
 
 echo "Virtual env set up to: $(pwd)"
 export TEST_VENV=$(pwd)
