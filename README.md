@@ -5,7 +5,7 @@ Automation framework (example).
 
 ## Note
 - !!! This is just an example of the code; this framework cannot be used for testing Instagram or running multiple times !!!
-- This framework was transitioned from Playwright to Selenium ( [Selenium version](https://github.com/inartov555/python_sel_mob_web_api_test) )
+- This framework was transitioned from Playwright to Selenium ( [Playwright version](https://github.com/inartov555/python_pw_e2e_test) )
 
 ---
 
@@ -24,10 +24,9 @@ To start tests, you need:
 2. Switch the "Show account suggestions on profiles" option OFF.
 3. Follow at least one person who makes some posts.
 4. Log out and then log in again.
-5. Open a terminal window and run `sudo apt-get install libavif16`
-6. Fill in [`pytest.ini`](./pytest.ini) parameters. 
+5. Fill in [`pytest.ini`](./pytest.ini) parameters. 
    To set the `password` parameter, encrypt the account password using [`tools/temp_encr.py`](./tools/temp_encr.py).
-7. Run the `run_tests.sh` file next way: `run_tests.sh $PATH_TO_THE_PROJECT $PATH_TO_INI_CONFIG` (if you don't pass the ini config file, then the default one is used [`pytest.ini`](./pytest.ini)). 
+6. Run the `run_tests.sh` file next way: `run_tests.sh $PATH_TO_THE_PROJECT $PATH_TO_INI_CONFIG` (if you don't pass the ini config file, then the default one is used [`pytest.ini`](./pytest.ini)). 
    Copied project folder, run results like logs, etc., are located in: `/home/$user_name/TEST1/workspace`. 
    Artifacts (run results, logs, etc.) are located in: `/home/$user_name/TEST1/workspace/artifact`.
 
