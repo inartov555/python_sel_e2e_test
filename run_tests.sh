@@ -1,10 +1,14 @@
 #!/bin/bash
 
 # Input parameters:
-#   - $1: the path to the *.ini config file, defaults to pytest.ini
+#
+#     Module name
+#   - $1 - the path to the *.ini config file, defaults to pytest.ini
+#
 # Exported variables in the setup.sh file: HOST_ARTIFACTS, ROOT_VENV, TEST_VENV, COPIED_PROJECT_PATH
 
-PASSED_CONFIG_FILE="$1"
+DEFAULT_INI_CONFIG_FILE="pytest.ini"
+PASSED_CONFIG_FILE="${1:-$DEFAULT_INI_CONFIG_FILE}"
 
 set -Eeuo pipefail
 trap cleanup EXIT ERR SIGINT SIGTERM
@@ -26,7 +30,6 @@ if [[ $? -ne 0 ]]; then
   exit 1
 fi
 
-DEFAULT_INI_CONFIG_FILE="pytest.ini"
 if [[ -z "$PASSED_CONFIG_FILE" ]]; then
   echo "WARNING: no path passed for the project, defaulting to $DEFAULT_INI_CONFIG_FILE"
   INI_CONFIG_FILE="$DEFAULT_INI_CONFIG_FILE"
@@ -34,9 +37,6 @@ if [[ -z "$PASSED_CONFIG_FILE" ]]; then
     echo "ERROR: Default path $DEFAULT_INI_CONFIG_FILE for the repo does not exist"
     exit 1
   fi
-elif [[ ! -d "$PASSED_CONFIG_FILE" ]]; then
-  echo "ERROR: Provided path '$PASSED_CONFIG_FILE' for the repo does not exist"
-  exit 1
 else
   INI_CONFIG_FILE="$PASSED_CONFIG_FILE"
   echo "Using $INI_CONFIG_FILE ini config file"
