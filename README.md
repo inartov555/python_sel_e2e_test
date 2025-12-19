@@ -35,7 +35,7 @@ To start tests, you need:
 
 ## Structure
 ```
-python_pytest_selenium_e2e_test/
+$PROJECT_DIRECTORY/
   src/
     core/          # config, browser, logging, base abstractions
     components/    # reusable UI components (PostCard)

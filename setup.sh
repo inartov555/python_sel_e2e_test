@@ -36,11 +36,11 @@ if [ $? -ne 0 ]; then
   ls $HOST_WORKSPACE
   return 1
 fi
-echo "'$REPO' is copied to $COPIED_PROJECT_PATH"
-echo "Entering the $COPIED_PROJECT_PATH directory"
+echo "'$REPO' is copied to '$COPIED_PROJECT_PATH'"
+echo "Entering the '$COPIED_PROJECT_PATH' directory"
 cd "$COPIED_PROJECT_PATH"
 
-echo "Root env set up to: $(pwd)"
+echo "Root env set up to: '$(pwd)'"
 export ROOT_VENV="$COPIED_PROJECT_PATH"
 echo "Entering the '$COPIED_PROJECT_PATH' module"
 cd "$COPIED_PROJECT_PATH"
@@ -64,5 +64,5 @@ echo ""
 python3 -m pip install --upgrade pip
 python3 -m pip install -r "$BASE_REQ_FILE"
 
-echo "Virtual env set up to: $(pwd)"
+echo "Virtual env set up to: '$(pwd)'"
 export TEST_VENV="$(pwd)"
