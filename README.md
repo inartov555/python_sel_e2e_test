@@ -51,7 +51,7 @@ $PROJECT_DIRECTORY/
   (e.g., `like()`, `save()`, `open_comments()`) to favor single responsibility and reusability.
 - **Typing & lint-friendly**: type hints and docstrings added; methods return self or domain objects for fluent usage.
 - **Capcha issue** This issue can be covered by `wait_to_handle_capture_manually = true` and after that, handle it manually 
-  while the test is waiting 120 seconds. I'd say that the CAPTCHA issue will not happen when tests are run just a few times.
+  while the test is waiting 120 seconds. Usually, the CAPTCHA is not shown if tests are run just a few times.
 - **Password encryption** It's a good thing to keep sensitive data like passwords, etc., encrypted to avoid data leakage.
 - **Explicit waits** via `WebDriverWait + EC`, wrapped in `Ui` helper.
 - **Locators with text**: The text needs to be placed in the localization classes later to support different languages
